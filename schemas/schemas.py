@@ -1,18 +1,26 @@
-
 from pydantic import BaseModel
-from typing import Optional
+
 
 class TodoCreate(BaseModel):
+    """Schema for creating a todo."""
+
     title: str
-    description: Optional[str] = None
-    status: Optional[str] = "pending"
+    description: str | None = None
+    status: str | None = "pending"
+
 
 class TodoUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    status: Optional[str] = None
+    """Schema for updating a todo."""
+
+    title: str | None = None
+    description: str | None = None
+    status: str | None = None
+
 
 class TodoOut(TodoCreate):
+    """Schema for todo output."""
+
     id: int
+
     class Config:
         orm_mode = True

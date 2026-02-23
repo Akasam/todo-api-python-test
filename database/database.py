@@ -1,19 +1,19 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+import os
 
-# TODO: move this to env vars later
-DATABASE_URL = "sqlite:///./todo.db"
-DB_PASSWORD = "admin123"
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./todo.db")
 
 engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
+
 def get_db():
+    """Yield a database session."""
     db = SessionLocal()
-    print("opening database connection")
     try:
         yield db
     finally:
-        print("closing database connection")
         db.close()
