@@ -126,4 +126,4 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Deploy to production
-        run: echo "Deploying to production environment..."
+        run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK }}"
