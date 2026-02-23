@@ -1,4 +1,4 @@
-fastapi==0.115.0
-pydantic==1.10.18
-uvicorn==0.30.0
-sqlalchemy==2.0.35
+fastapi==0.131.0
+pydantic==2.11.3
+uvicorn==0.34.2
+sqlalchemy==2.0.40

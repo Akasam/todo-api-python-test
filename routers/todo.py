@@ -11,7 +11,7 @@ router = APIRouter()
 @router.post("/", response_model=TodoOut)
 def create_todo(todo: TodoCreate, db: Session = Depends(get_db)):
     """Create a new todo item."""
-    db_todo = TodoItem(**todo.dict())
+    db_todo = TodoItem(**todo.model_dump())
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
@@ -39,7 +39,7 @@ def update_todo(todo_id: int, todo: TodoUpdate, db: Session = Depends(get_db)):
     db_todo = db.query(TodoItem).filter(TodoItem.id == todo_id).first()
     if not db_todo:
         raise HTTPException(status_code=404, detail="Todo not found")
-    for key, value in todo.dict(exclude_unset=True).items():
+    for key, value in todo.model_dump(exclude_unset=True).items():
         setattr(db_todo, key, value)
     db.commit()
     db.refresh(db_todo)
