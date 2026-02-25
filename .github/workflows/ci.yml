@@ -129,3 +129,17 @@ jobs:
     steps:
       - name: Deploy to production
         run: curl -s "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
+  notify:
+    needs: [deploy-production]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Discord notification
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: ${{ needs.deploy-production.result == 'success' && 'info' || 'error' }}
+          details: |
+            **${{ github.repository }}** — ${{ needs.deploy-production.result == 'success' && '✅ Deploy success' || '❌ Deploy failed' }}
+            Branch: `${{ github.ref_name }}` | Commit: `${{ github.sha }}`
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_URL }}
